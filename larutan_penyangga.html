@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Larutan Penyangga</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1e2336;
+    --accent: #4fc3f7;
+    --accent2: #81d4fa;
+    --gold: #ffd54f;
+    --green: #69f0ae;
+    --red: #ff5252;
+    --purple: #ce93d8;
+    --text: #e8eaf6;
+    --muted: #7986cb;
+    --border: rgba(79,195,247,0.18);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Sans 3', sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #0f1117 0%, #1a1f35 50%, #0f1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 56px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%; transform: translateX(-50%);
+    width: 500px; height: 300px;
+    background: radial-gradient(ellipse, rgba(79,195,247,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    opacity: 0.8;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 3.6rem);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub {
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 300;
+    letter-spacing: 1px;
+  }
+
+  /* TOC */
+  .toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding: 20px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .toc a {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 5px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .toc a:hover { background: rgba(79,195,247,0.12); border-color: var(--accent); }
+
+  /* Main layout */
+  .container { max-width: 860px; margin: 0 auto; padding: 40px 20px 60px; }
+
+  /* Section */
+  .section {
+    margin-bottom: 44px;
+    animation: fadeUp 0.5s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(79,195,247,0.1);
+    border: 1px solid var(--border);
+    padding: 3px 9px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+  }
+  .section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 14px;
+  }
+  .card-title {
+    font-weight: 600;
+    color: var(--accent2);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .card p, .card li { font-size: 14.5px; color: #c5cae9; }
+  .card ul { padding-left: 20px; }
+  .card ul li { margin-bottom: 6px; }
+
+  /* Highlight box */
+  .highlight {
+    background: linear-gradient(135deg, rgba(79,195,247,0.07), rgba(129,212,250,0.04));
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+    font-size: 14.5px;
+    color: #c5cae9;
+  }
+
+  /* Grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media(max-width: 580px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  /* Formula box */
+  .formula-box {
+    background: #0a0e1a;
+    border: 1px solid rgba(79,195,247,0.25);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 14px;
+    font-family: 'Source Code Pro', monospace;
+  }
+  .formula-label {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .formula-main {
+    font-size: 1.2rem;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .formula-note { font-size: 12px; color: #7986cb; line-height: 1.8; }
+  .formula-note span { color: var(--accent2); }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin-bottom: 14px;
+  }
+  th {
+    background: rgba(79,195,247,0.1);
+    color: var(--accent);
+    font-family: 'Source Code Pro', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 11px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 11px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: #c5cae9;
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* Badge */
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-family: 'Source Code Pro', monospace;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .badge-acid { background: rgba(255,82,82,0.15); color: var(--red); border: 1px solid rgba(255,82,82,0.3); }
+  .badge-base { background: rgba(105,240,174,0.12); color: var(--green); border: 1px solid rgba(105,240,174,0.3); }
+
+  /* Steps */
+  .steps { counter-reset: step; }
+  .step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+  .step-num {
+    counter-increment: step;
+    content: counter(step);
+    min-width: 32px; height: 32px;
+    background: rgba(79,195,247,0.12);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .step-content { font-size: 14.5px; color: #c5cae9; padding-top: 4px; }
+  .step-content strong { color: var(--text); }
+
+  /* Exercise section */
+  .exercise-section {
+    background: linear-gradient(135deg, #131825, #1a1f35);
+    border: 1px solid rgba(255,213,79,0.2);
+    border-radius: 16px;
+    padding: 28px 28px;
+    margin-bottom: 20px;
+  }
+  .ex-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .ex-badge {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    background: rgba(255,213,79,0.1);
+    border: 1px solid rgba(255,213,79,0.25);
+    padding: 4px 12px;
+    border-radius: 4px;
+  }
+  .ex-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: #fff;
+  }
+  .question {
+    background: rgba(0,0,0,0.25);
+    border-left: 3px solid var(--gold);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 14px;
+    font-size: 14.5px;
+    color: #e0e0e0;
+  }
+  .solution {
+    background: rgba(105,240,174,0.04);
+    border: 1px solid rgba(105,240,174,0.15);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+  .solution-label {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .solution p, .solution li { font-size: 14px; color: #b2dfdb; line-height: 1.8; }
+  .solution ul { padding-left: 18px; }
+  .answer {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 13px;
+    color: var(--gold);
+    background: rgba(255,213,79,0.07);
+    border: 1px solid rgba(255,213,79,0.2);
+    border-radius: 6px;
+    padding: 10px 16px;
+    margin-top: 10px;
+    display: inline-block;
+  }
+
+  /* Life section */
+  .life-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+  }
+  .life-card:hover { border-color: rgba(79,195,247,0.35); }
+  .life-icon {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .life-body h4 {
+    font-weight: 600;
+    color: var(--accent2);
+    margin-bottom: 5px;
+    font-size: 15px;
+  }
+  .life-body p { font-size: 14px; color: #9fa8da; }
+
+  /* Divider */
+  hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  /* Chemical formula inline */
+  sub { font-size: 0.78em; }
+  .chem { font-family: 'Source Code Pro', monospace; color: var(--accent2); font-size: 0.9em; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">Kimia · Kelas XI</div>
+  <h1>Larutan <span>Penyangga</span></h1>
+  <div class="hero-sub">Catatan Lengkap + Soal Latihan</div>
+</div>
+
+<!-- TOC -->
+<nav class="toc">
+  <a href="#definisi">Definisi</a>
+  <a href="#sifat">Sifat</a>
+  <a href="#komponen">Komponen & Contoh</a>
+  <a href="#pembuatan">Cara Pembuatan</a>
+  <a href="#ph">Hitung pH</a>
+  <a href="#latihan">Soal Latihan</a>
+  <a href="#kehidupan">Kehidupan Sehari-hari</a>
+</nav>
+
+<div class="container">
+
+  <!-- 1. DEFINISI -->
+  <div class="section" id="definisi">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2>Definisi</h2>
+    </div>
+    <div class="highlight">
+      <strong>Larutan penyangga</strong> (buffer solution) adalah larutan yang mampu mempertahankan nilai pH-nya meskipun ditambahkan sedikit asam kuat, basa kuat, atau diencerkan dengan air.
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Mengapa penting?</div>
+      <p>pH merupakan parameter kritis dalam banyak reaksi kimia dan biologis. Tanpa penyangga, penambahan sedikit asam/basa dapat mengubah pH secara drastis dan mengganggu keseimbangan sistem — seperti dalam darah manusia, enzim, dan obat-obatan.</p>
+    </div>
+  </div>
+
+  <!-- 2. SIFAT -->
+  <div class="section" id="sifat">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2>Sifat Larutan Penyangga</h2>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>pH Relatif Stabil</div>
+        <p>pH tidak berubah signifikan saat ditambahkan sedikit asam atau basa kuat.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>Tahan Pengenceran</div>
+        <p>pH hampir tidak berubah ketika larutan diencerkan dengan air.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>Kapasitas Penyangga</div>
+        <p>Kemampuan menahan perubahan pH bergantung pada konsentrasi komponen penyangga.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>Memiliki Range pH</div>
+        <p>Setiap sistem penyangga efektif pada rentang pH tertentu (±1 dari pKa).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. KOMPONEN -->
+  <div class="section" id="komponen">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2>Komponen & Contoh</h2>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Jenis</th>
+          <th>Komponen</th>
+          <th>Contoh</th>
+          <th>pH</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-acid">Asam</span></td>
+          <td>Asam lemah + garamnya (basa konjugasi)</td>
+          <td>CH₃COOH + CH₃COONa<br>H₂CO₃ + NaHCO₃</td>
+          <td>&lt; 7</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-base">Basa</span></td>
+          <td>Basa lemah + garamnya (asam konjugasi)</td>
+          <td>NH₃ + NH₄Cl<br>NH₄OH + NH₄Cl</td>
+          <td>&gt; 7</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Cara Kerja (Mekanisme)</div>
+      <ul>
+        <li><strong>Bila ditambah asam (H⁺):</strong> Ion basa konjugasi menyerap H⁺ → basa konjugasi + H⁺ → asam lemah</li>
+        <li><strong>Bila ditambah basa (OH⁻):</strong> Asam lemah bereaksi dengan OH⁻ → asam lemah + OH⁻ → basa konjugasi + H₂O</li>
+        <li><strong>Hasilnya:</strong> Jumlah H⁺ dalam larutan hampir tidak berubah → pH stabil</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4. CARA PEMBUATAN -->
+  <div class="section" id="pembuatan">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2>Cara Pembuatan</h2>
+    </div>
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-title"><span class="dot"></span>Metode 1 — Campuran Langsung</div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Asam lemah + garamnya</strong> → dicampur langsung, misal: CH₃COOH + CH₃COONa</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Basa lemah + garamnya</strong> → dicampur langsung, misal: NH₃ + NH₄Cl</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Metode 2 — Reaksi Parsial</div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Asam kuat berlebih + basa lemah:</strong> NaOH (sedikit) + CH₃COOH (berlebih). NaOH habis bereaksi, sisa CH₃COOH + produk CH₃COONa → terbentuk buffer</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Basa kuat berlebih + asam lemah:</strong> NH₃ (berlebih) + HCl (sedikit). HCl habis bereaksi, sisa NH₃ + produk NH₄Cl → terbentuk buffer</div></div>
+      </div>
+      <div class="highlight" style="margin-top:10px;margin-bottom:0">
+        ⚠️ Syarat: salah satu komponen harus sisa (berlebih). Jika keduanya habis bereaksi sempurna, tidak terbentuk penyangga.
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. HITUNG pH -->
+  <div class="section" id="ph">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2>Menghitung pH Penyangga</h2>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-label">Henderson–Hasselbalch — Penyangga Asam</div>
+      <div class="formula-main">pH = pKa + log([A⁻] / [HA])</div>
+      <div class="formula-note">
+        <span>pKa</span> = −log Ka &nbsp;|&nbsp;
+        <span>[A⁻]</span> = konsentrasi basa konjugasi (mol garam) &nbsp;|&nbsp;
+        <span>[HA]</span> = konsentrasi asam lemah
+      </div>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-label">Henderson–Hasselbalch — Penyangga Basa</div>
+      <div class="formula-main">pOH = pKb + log([BH⁺] / [B])</div>
+      <div class="formula-note">
+        Lalu: <span>pH = 14 − pOH</span> &nbsp;|&nbsp;
+        <span>[BH⁺]</span> = konsentrasi asam konjugasi (mol garam) &nbsp;|&nbsp;
+        <span>[B]</span> = konsentrasi basa lemah
+      </div>
+    </div>
+
+    <!-- Contoh Soal Terhitung -->
+    <div class="exercise-section">
+      <div class="ex-header">
+        <span class="ex-badge">CONTOH SOAL</span>
+        <span class="ex-title">pH Penyangga Asam</span>
+      </div>
+
+      <div class="question">
+        Hitunglah pH larutan penyangga yang terdiri dari 0,1 mol CH₃COOH dan 0,1 mol CH₃COONa dalam 1 liter larutan. (Ka CH₃COOH = 1,8 × 10⁻⁵)
+      </div>
+      <div class="solution">
+        <div class="solution-label">✦ Penyelesaian</div>
+        <ul>
+          <li>pKa = −log(1,8 × 10⁻⁵) = 5 − log 1,8 = 5 − 0,255 = <strong>4,745</strong></li>
+          <li>[A⁻]/[HA] = 0,1/0,1 = <strong>1</strong></li>
+          <li>pH = pKa + log(1) = 4,745 + 0 = <strong>4,745</strong></li>
+        </ul>
+        <div class="answer">pH = 4,74 ≈ 4,75</div>
+      </div>
+
+      <div class="ex-header" style="margin-top:10px">
+        <span class="ex-badge">CONTOH SOAL</span>
+        <span class="ex-title">pH Penyangga Basa</span>
+      </div>
+      <div class="question">
+        Hitunglah pH larutan penyangga yang mengandung 0,2 mol NH₃ dan 0,1 mol NH₄Cl. (Kb NH₃ = 1,8 × 10⁻⁵)
+      </div>
+      <div class="solution">
+        <div class="solution-label">✦ Penyelesaian</div>
+        <ul>
+          <li>pKb = −log(1,8 × 10⁻⁵) = <strong>4,745</strong></li>
+          <li>[BH⁺]/[B] = 0,1/0,2 = <strong>0,5</strong></li>
+          <li>pOH = 4,745 + log(0,5) = 4,745 − 0,301 = <strong>4,444</strong></li>
+          <li>pH = 14 − 4,444 = <strong>9,556</strong></li>
+        </ul>
+        <div class="answer">pH = 9,56</div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 6. SOAL LATIHAN -->
+  <div class="section" id="latihan">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2>Soal Latihan & Pembahasan</h2>
+    </div>
+
+    <!-- Soal 1 -->
+    <div class="exercise-section">
+      <div class="ex-header">
+        <span class="ex-badge">SOAL 1</span>
+        <span class="ex-title">Identifikasi Larutan Penyangga</span>
+      </div>
+      <div class="question">
+        Di antara campuran berikut, manakah yang membentuk larutan penyangga?<br>
+        a) 100 mL HCl 0,1 M + 100 mL NaOH 0,1 M<br>
+        b) 100 mL CH₃COOH 0,2 M + 100 mL NaOH 0,1 M<br>
+        c) 100 mL NH₃ 0,1 M + 100 mL HCl 0,1 M<br>
+        d) 100 mL HCl 0,1 M + 100 mL NH₃ 0,2 M
+      </div>
+      <div class="solution">
+        <div class="solution-label">✦ Pembahasan</div>
+        <ul>
+          <li><strong>a)</strong> HCl + NaOH → NaCl + H₂O. Mol sama, bereaksi sempurna. Garam netral. ❌ Bukan penyangga</li>
+          <li><strong>b)</strong> mol CH₃COOH = 0,02 mol; mol NaOH = 0,01 mol. NaOH bereaksi dengan CH₃COOH → sisa CH₃COOH 0,01 mol + terbentuk CH₃COONa 0,01 mol. ✅ <strong>Penyangga asam</strong></li>
+          <li><strong>c)</strong> mol NH₃ = 0,01 mol; mol HCl = 0,01 mol. Bereaksi sempurna → NH₄Cl. Hanya garam, tidak ada sisa basa. ❌ Bukan penyangga</li>
+          <li><strong>d)</strong> mol NH₃ = 0,02 mol; mol HCl = 0,01 mol. HCl habis bereaksi → sisa NH₃ 0,01 mol + terbentuk NH₄Cl 0,01 mol. ✅ <strong>Penyangga basa</strong></li>
+        </ul>
+        <div class="answer">Jawaban: b dan d</div>
+      </div>
+    </div>
+
+    <!-- Soal 2 -->
+    <div class="exercise-section">
+      <div class="ex-header">
+        <span class="ex-badge">SOAL 2</span>
+        <span class="ex-title">Menghitung pH Penyangga Asam</span>
+      </div>
+      <div class="question">
+        Sebanyak 50 mL CH₃COOH 0,4 M dicampur dengan 50 mL NaOH 0,2 M. Tentukan pH campuran tersebut! (Ka = 1,8 × 10⁻⁵)
+      </div>
+      <div class="solution">
+        <div class="solution-label">✦ Pembahasan</div>
+        <ul>
+          <li>mol CH₃COOH = 50 × 0,4 = <strong>20 mmol</strong></li>
+          <li>mol NaOH = 50 × 0,2 = <strong>10 mmol</strong></li>
+          <li>Reaksi: CH₃COOH + NaOH → CH₃COONa + H₂O</li>
+          <li>Sisa CH₃COOH = 20 − 10 = <strong>10 mmol</strong></li>
+          <li>CH₃COONa terbentuk = <strong>10 mmol</strong></li>
+          <li>pKa = −log(1,8 × 10⁻⁵) = <strong>4,745</strong></li>
+          <li>pH = pKa + log([A⁻]/[HA]) = 4,745 + log(10/10) = 4,745 + 0</li>
+        </ul>
+        <div class="answer">pH = 4,74 ≈ 4,75</div>
+      </div>
+    </div>
+
+    <!-- Soal 3 -->
+    <div class="exercise-section">
+      <div class="ex-header">
+        <span class="ex-badge">SOAL 3</span>
+        <span class="ex-title">Menghitung pH Penyangga Basa</span>
+      </div>
+      <div class="question">
+        Campuran 200 mL NH₃ 0,5 M dengan 300 mL NH₄Cl 0,2 M. Hitunglah pH larutan ini! (Kb NH₃ = 1,8 × 10⁻⁵)
+      </div>
+      <div class="solution">
+        <div class="solution-label">✦ Pembahasan</div>
+        <ul>
+          <li>mol NH₃ = 200 × 0,5 = <strong>100 mmol</strong></li>
+          <li>mol NH₄Cl = 300 × 0,2 = <strong>60 mmol</strong></li>
+          <li>pKb = −log(1,8 × 10⁻⁵) = <strong>4,745</strong></li>
+          <li>pOH = pKb + log([BH⁺]/[B]) = 4,745 + log(60/100)</li>
+          <li>= 4,745 + log(0,6) = 4,745 + (−0,222) = <strong>4,523</strong></li>
+          <li>pH = 14 − pOH = 14 − 4,523 = <strong>9,477</strong></li>
+        </ul>
+        <div class="answer">pH = 9,48</div>
+      </div>
+    </div>
+
+    <!-- Soal 4 -->
+    <div class="exercise-section">
+      <div class="ex-header">
+        <span class="ex-badge">SOAL 4</span>
+        <span class="ex-title">Penambahan Asam pada Penyangga</span>
+      </div>
+      <div class="question">
+        Ke dalam 1 liter larutan penyangga yang mengandung 0,1 mol CH₃COOH dan 0,1 mol CH₃COONa, ditambahkan 0,01 mol HCl. Berapa pH setelah penambahan? (Ka = 1,8 × 10⁻⁵; abaikan perubahan volume)
+      </div>
+      <div class="solution">
+        <div class="solution-label">✦ Pembahasan</div>
+        <ul>
+          <li>HCl bereaksi dengan CH₃COO⁻ : CH₃COO⁻ + H⁺ → CH₃COOH</li>
+          <li>mol CH₃COOH setelah = 0,1 + 0,01 = <strong>0,11 mol</strong></li>
+          <li>mol CH₃COO⁻ setelah = 0,1 − 0,01 = <strong>0,09 mol</strong></li>
+          <li>pKa = 4,745</li>
+          <li>pH = 4,745 + log(0,09/0,11) = 4,745 + log(0,818)</li>
+          <li>= 4,745 + (−0,087) = <strong>4,658</strong></li>
+          <li>Perubahan pH: dari 4,745 → 4,658 (hanya turun 0,087!) ✅ Penyangga bekerja</li>
+        </ul>
+        <div class="answer">pH = 4,66 (turun sangat sedikit dari 4,74)</div>
+      </div>
+    </div>
+
+    <!-- Soal 5 -->
+    <div class="exercise-section">
+      <div class="ex-header">
+        <span class="ex-badge">SOAL 5</span>
+        <span class="ex-title">Merancang Larutan Penyangga</span>
+      </div>
+      <div class="question">
+        Berapa gram CH₃COONa (Mr = 82 g/mol) yang harus ditambahkan ke dalam 500 mL CH₃COOH 0,2 M agar diperoleh larutan penyangga dengan pH = 5? (Ka = 1,8 × 10⁻⁵)
+      </div>
+      <div class="solution">
+        <div class="solution-label">✦ Pembahasan</div>
+        <ul>
+          <li>pH = pKa + log([A⁻]/[HA])</li>
+          <li>5 = 4,745 + log([A⁻]/[HA])</li>
+          <li>log([A⁻]/[HA]) = 0,255 → [A⁻]/[HA] = 10^0,255 = <strong>1,8</strong></li>
+          <li>mol CH₃COOH = 0,5 L × 0,2 M = 0,1 mol</li>
+          <li>mol CH₃COO⁻ = 1,8 × 0,1 = <strong>0,18 mol</strong></li>
+          <li>massa CH₃COONa = 0,18 × 82 = <strong>14,76 gram</strong></li>
+        </ul>
+        <div class="answer">Massa CH₃COONa = 14,76 gram ≈ 14,8 gram</div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 7. KEHIDUPAN SEHARI-HARI -->
+  <div class="section" id="kehidupan">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2>Larutan Penyangga dalam Kehidupan Sehari-hari</h2>
+    </div>
+
+    <div class="life-card">
+      <div class="life-icon">🩸</div>
+      <div class="life-body">
+        <h4>Darah Manusia (pH 7,35 – 7,45)</h4>
+        <p>Sistem penyangga utama: H₂CO₃/HCO₃⁻ (karbonat) dan H₂PO₄⁻/HPO₄²⁻ (fosfat). Jika pH darah keluar dari rentang ini terjadi asidosis atau alkalosis yang mengancam jiwa.</p>
+      </div>
+    </div>
+
+    <div class="life-card">
+      <div class="life-icon">🦷</div>
+      <div class="life-body">
+        <h4>Air Ludah (pH 6,8 – 7,4)</h4>
+        <p>Penyangga fosfat (H₂PO₄⁻/HPO₄²⁻) dan karbonat menjaga pH mulut tetap aman. Jika pH turun di bawah 5,5 akibat bakteri, enamel gigi mulai larut → gigi berlubang.</p>
+      </div>
+    </div>
+
+    <div class="life-card">
+      <div class="life-icon">💊</div>
+      <div class="life-body">
+        <h4>Obat-obatan & Infus</h4>
+        <p>Aspirin (asam asetilsalisilat) diformulasikan dalam penyangga fosfat agar stabil. Cairan infus menggunakan penyangga karbonat/fosfat agar sesuai pH darah dan tidak merusak sel.</p>
+      </div>
+    </div>
+
+    <div class="life-card">
+      <div class="life-icon">🧴</div>
+      <div class="life-body">
+        <h4>Sampo & Produk Perawatan Kulit</h4>
+        <p>Sampo mengandung penyangga sitrat (pH 5–6) agar sesuai pH rambut dan kulit kepala. Krim wajah menggunakan penyangga asetat/fosfat untuk menjaga kestabilan formula dan kenyamanan kulit.</p>
+      </div>
+    </div>
+
+    <div class="life-card">
+      <div class="life-icon">🌿</div>
+      <div class="life-body">
+        <h4>Tanah Pertanian</h4>
+        <p>Tanah memiliki sistem penyangga alami (humus + mineral). Petani menambahkan kapur (CaCO₃) atau pupuk untuk menjaga pH tanah 6–7 agar unsur hara mudah diserap tanaman.</p>
+      </div>
+    </div>
+
+    <div class="life-card">
+      <div class="life-icon">🐟</div>
+      <div class="life-body">
+        <h4>Akuarium & Perairan</h4>
+        <p>Air kolam ikan dijaga pH 6,5–8 menggunakan penyangga karbonat. Perubahan pH mendadak bisa mematikan ikan akibat stres osmotik pada insang.</p>
+      </div>
+    </div>
+
+    <div class="life-card">
+      <div class="life-icon">🧬</div>
+      <div class="life-body">
+        <h4>Laboratorium Biologi & Biokimia</h4>
+        <p>Reaksi enzim sangat sensitif terhadap pH. Buffer PBS (Phosphate Buffered Saline, pH 7,4) digunakan untuk mempertahankan aktivitas enzim dan protein selama penelitian.</p>
+      </div>
+    </div>
+
+    <div class="life-card">
+      <div class="life-icon">🧪</div>
+      <div class="life-body">
+        <h4>Industri Makanan & Minuman</h4>
+        <p>Penyangga sitrat digunakan dalam minuman ringan dan jus untuk menjaga rasa dan mencegah pertumbuhan mikroba. Industri susu menggunakan penyangga fosfat dalam pengolahan keju dan yogurt.</p>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- /container -->
+
+</body>
+</html>
